@@ -1,0 +1,3 @@
+* Interact with Tmux sessions from Emacs
+
+This is primarily designed for interacting with remote tmux sessions on a server as a way of having long running tasks on remote hosts.
