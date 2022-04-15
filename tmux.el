@@ -19,8 +19,6 @@
   "Mode for interacting with Tmux sessions."
   (buffer-disable-undo)
   (defvar-local tmux-session-name 'nil)
-  (setq-local ssh-addr "3.21.40.48"
-	      ssh-hostname "ubuntu")
   (setq-local revert-buffer-function
 	      'tmux/refresh-buffer)
   (setq-local tmux-refresh-timer
