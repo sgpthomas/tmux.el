@@ -28,15 +28,7 @@
               'tmux/refresh-buffer)
 
   ;; add buffer to buffer list
-  (add-to-list 'tmux-buffer-list
-               (current-buffer))
-  ;; remove buffer from list when it's killed
-  ;; (add-hook 'kill-buffer-hook
-  ;;        (lambda ()
-  ;;          (delete (current-buffer) tmux-buffer-list)))
-
-  ;; make keymap
-  (evil-make-overriding-map tmux-session-mode-map 'normal))
+  (add-to-list 'tmux-buffer-list (current-buffer)))
 
 (defun tmux/--popup-description ()
   (let* ((session (when tmux-session-name (format "Session: %s" tmux-session-name)))
