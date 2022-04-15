@@ -122,7 +122,8 @@
 
 (defun tmux/get-session ()
   "Interactively get running session."
-  (let* ((names (tmux/--list-sessions)))
+  (let* ((names (--filter (not (equal it tmux-session-name))
+			  (tmux/--list-sessions))))
     (cond
      ((eq (length names) 0) (error "No live sessions."))
      ((eq (length names) 1) (car names))
