@@ -5,6 +5,10 @@
 ;; Author: Samuel Thomas <sgt@cs.utexas.edu>
 ;; Package-Requires: (dash transient s)
 
+(require 'dash)
+(require 'transient)
+(require 's)
+
 (defvar tmux-buffer-list '())
 
 (defvar tmux-session-mode-map
