@@ -30,8 +30,9 @@
   (add-to-list 'tmux-buffer-list
 	       (current-buffer))
   ;; remove buffer from list when it's killed
-  (add-hook 'kill-buffer-hook
-	    (lambda () (delete (current-buffer) 'tmux-buffer-list)))
+  ;; (add-hook 'kill-buffer-hook
+  ;; 	    (lambda ()
+  ;; 	      (delete (current-buffer) tmux-buffer-list)))
 
   ;; make keymap
   (evil-make-overriding-map tmux-session-mode-map 'normal))
