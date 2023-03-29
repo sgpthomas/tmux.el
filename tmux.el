@@ -52,6 +52,7 @@
    ["Input/Output"
     ("r" "Refresh" tmux/refresh-buffer)
     ("c" "Command" tmux/send)
+    ("a" "Abort (send C-c)" tmux/abort-command)
     ("t" "Timer" tmux/toggle-refresh-timer)]])
 
 ;; Commands
@@ -66,7 +67,7 @@
   (interactive)
   (with-current-buffer (current-buffer)
     (let* ((name (read-string "Session name: ")))
-      (tmux/command (format "new -d -s %s" name))
+      (tmux/command (format "new -d -s %s -x 200" name))
       (setq-local tmux-session-name name)
       (tmux/capture-pane))))
 
@@ -81,6 +82,7 @@
          (tmux/switch-session))
       (error "No tmux session."))))
 
+
 (defun tmux/refresh-buffer (&optional ignore-auto no-confirm)
   (interactive)
   (tmux/capture-pane))
@@ -93,6 +95,24 @@
           (tmux/command (format "send -t %s '%s' ENTER"
                                 tmux-session-name
                                 cmd))
+          (tmux/capture-pane))
+      (error "No tmux session."))))
+
+(defun tmux/abort-command ()
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (if tmux-session-name
+        (progn (tmux/command (format "send -t %s C-c"
+                                     tmux-session-name))
+               (tmux/capture-pane))
+      (error "No tmux session."))))
+
+(defun tmux/raw ()
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (if tmux-session-name
+        (let* ((cmd (read-string (format "Raw Tmux command (%s): " tmux-session-name))))
+          (message "%s" (tmux/command (format "%s" cmd)))
           (tmux/capture-pane))
       (error "No tmux session."))))
 
@@ -146,7 +166,7 @@
     (shell-command-to-string
      (if (and tmux-ssh-hostname tmux-ssh-addr)
          (progn
-           (format "ssh %s@%s \"tmux %s\""
+           (format "ssh -o StrictHostKeyChecking=no %s@%s \"tmux %s\""
                    tmux-ssh-hostname tmux-ssh-addr
                    cmd))
        (format "tmux %s" cmd)))))
